@@ -1,0 +1,304 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap');
+@import "tailwindcss";
+
+:root {
+  /* Arcade Color Palette */
+  --arcade-red: #FF0000;
+  --arcade-green: #00FF00;
+  --arcade-yellow: #FFFF00;
+  --arcade-cyan: #00FFFF;
+  --arcade-magenta: #FF00FF;
+  --arcade-orange: #FF6600;
+  --arcade-pink: #FFB8FF;
+  --arcade-purple: #BF00FF;
+  --arcade-white: #FFFFFF;
+  --neon-green: #39FF14;
+  
+  /* CRT Effects - Toned down for readability */
+  --scanline-opacity: 0.08;
+  --flicker-intensity: 0.3;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: transparent !important;
+  font-family: 'VT323', monospace;
+}
+
+/* ============================================
+   CRT CONTAINER - HEAVY EFFECTS
+   ============================================ */
+
+.crt-container {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  /* Barrel distortion approximation */
+  border-radius: 50px / 30px;
+}
+
+/* Scanlines Overlay - Static for performance */
+.crt-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, var(--scanline-opacity)),
+    rgba(0, 0, 0, var(--scanline-opacity)) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  pointer-events: none;
+  z-index: 100;
+}
+
+/* Flicker removed for performance */
+
+/* Vignette Effect */
+.vignette {
+  position: fixed;
+  inset: 0;
+  box-shadow: inset 0 0 150px rgba(0, 0, 0, 0.5);
+  pointer-events: none;
+  z-index: 99;
+  border-radius: 30px / 20px;
+}
+
+/* Rolling line removed for performance */
+
+/* ============================================
+   CHROMATIC ABERRATION TEXT
+   ============================================ */
+
+.chromatic-text {
+  text-shadow: 
+    -0.5px 0 var(--arcade-red),
+    0.5px 0 var(--arcade-cyan);
+}
+
+.chromatic-text-strong {
+  text-shadow: 
+    -1px 0 var(--arcade-red),
+    1px 0 var(--arcade-cyan),
+    0 0 8px currentColor;
+}
+
+/* ============================================
+   MESSAGE STYLES
+   ============================================ */
+
+.message-container {
+  position: fixed;
+  padding: 8px 12px;
+  background: rgba(0, 0, 0, 0.8);
+  border: 2px solid currentColor;
+  border-radius: 4px;
+  max-width: 400px;
+  contain: layout style paint;
+  z-index: 10;
+}
+
+.message-username {
+  font-family: 'Press Start 2P', cursive;
+  font-size: 10px;
+  margin-bottom: 4px;
+  image-rendering: pixelated;
+  text-shadow: 0 0 4px currentColor;
+}
+
+.message-text {
+  font-family: 'VT323', monospace;
+  font-size: 22px;
+  color: var(--arcade-white);
+  line-height: 1.2;
+  word-wrap: break-word;
+}
+
+/* Blinking Cursor */
+.cursor {
+  display: inline-block;
+  color: var(--arcade-green);
+  animation: blink 0.7s step-end infinite;
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+/* Message Enter Animation - Simple fade in */
+@keyframes messageEnter {
+  0% { 
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  100% { 
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Message Exit Animation */
+@keyframes messageExit {
+  0% { 
+    opacity: 1;
+  }
+  100% { 
+    opacity: 0;
+  }
+}
+
+.message-enter {
+  animation: messageEnter 0.2s ease-out forwards;
+}
+
+.message-exit {
+  animation: messageExit 0.5s ease-in forwards;
+}
+
+/* ============================================
+   ALERT STYLES
+   ============================================ */
+
+.alert-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 200;
+  text-align: center;
+}
+
+.alert-box {
+  background: rgba(0, 0, 0, 0.95);
+  border: 4px solid;
+  padding: 24px 48px;
+  font-family: 'Press Start 2P', cursive;
+}
+
+.alert-title {
+  font-size: 24px;
+  margin-bottom: 16px;
+  animation: pixelFlash 0.3s infinite;
+}
+
+@keyframes pixelFlash {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0.7; }
+}
+
+.alert-subtitle {
+  font-size: 14px;
+  color: var(--arcade-white);
+}
+
+.alert-amount {
+  font-size: 32px;
+  margin-top: 12px;
+}
+
+/* Raid Ships Animation */
+.raid-ships {
+  position: absolute;
+  top: -50px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+}
+
+.pixel-ship {
+  font-size: 20px;
+  color: var(--arcade-green);
+  text-shadow: 0 0 8px var(--arcade-green);
+  animation: shipFloat 1s ease-in-out infinite alternate;
+}
+
+.pixel-ship:nth-child(2n) {
+  animation-delay: 0.2s;
+}
+
+.pixel-ship:nth-child(3n) {
+  animation-delay: 0.4s;
+}
+
+@keyframes shipFloat {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-8px); }
+}
+
+/* Alert Enter/Exit */
+@keyframes alertEnter {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.1);
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes alertExit {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0;
+  }
+}
+
+.alert-enter {
+  animation: alertEnter 0.3s ease-out forwards;
+}
+
+.alert-exit {
+  animation: alertExit 0.3s ease-in forwards;
+}
+
+/* Screen Flash for Events */
+.screen-flash {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 150;
+  animation: screenFlash 0.1s ease-out;
+}
+
+@keyframes screenFlash {
+  0% { opacity: 0.5; }
+  100% { opacity: 0; }
+}
+
+/* ============================================
+   UTILITY CLASSES
+   ============================================ */
+
+.pixel-text {
+  font-family: 'Press Start 2P', cursive;
+  image-rendering: pixelated;
+  -webkit-font-smoothing: none;
+}
+
+.terminal-text {
+  font-family: 'VT323', monospace;
+}
