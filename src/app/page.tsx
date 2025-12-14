@@ -7,12 +7,14 @@ import { ScatteredMessage } from '@/components/ScatteredMessage';
 import { SubAlert } from '@/components/SubAlert';
 import { BitsAlert } from '@/components/BitsAlert';
 import { RaidAlert } from '@/components/RaidAlert';
+import { FollowerAlert } from '@/components/FollowerAlert';
 import {
   useTwitchChat,
   type ChatMessage,
   type SubEvent,
   type CheerEvent,
   type RaidEvent,
+  type FollowEvent,
 } from '@/hooks/useTwitchChat';
 import { useTestMode } from '@/hooks/useTestMode';
 
@@ -30,7 +32,8 @@ interface DisplayMessage extends ChatMessage {
 type AlertType =
   | { type: 'sub'; data: SubEvent }
   | { type: 'bits'; data: CheerEvent }
-  | { type: 'raid'; data: RaidEvent };
+  | { type: 'raid'; data: RaidEvent }
+  | { type: 'follow'; data: FollowEvent };
 
 function ChatOverlay() {
   const searchParams = useSearchParams();
@@ -77,27 +80,35 @@ function ChatOverlay() {
     setAlerts((prev) => [...prev, { type: 'raid', data: raid }]);
   }, []);
 
+  // Handle follow event
+  const handleFollow = useCallback((follow: FollowEvent) => {
+    setAlerts((prev) => [...prev, { type: 'follow', data: follow }]);
+  }, []);
+
   // Handle alert completion
   const handleAlertComplete = useCallback(() => {
     setAlerts((prev) => prev.slice(1)); // Remove first alert
   }, []);
 
   // Connect to Twitch chat (disabled in test mode)
+  // Note: Follower events require Twitch EventSub API (not available via tmi.js)
   useTwitchChat({
     channel: isTestMode ? '' : TWITCH_CHANNEL, // Empty channel disables connection
     onMessage: isTestMode ? undefined : handleMessage,
     onSub: isTestMode ? undefined : handleSub,
     onCheer: isTestMode ? undefined : handleCheer,
     onRaid: isTestMode ? undefined : handleRaid,
+    onFollow: isTestMode ? undefined : handleFollow,
   });
 
   // Test mode for previewing without live chat
-  const { sendTestSub, sendTestBits, sendTestRaid } = useTestMode({
+  const { sendTestSub, sendTestBits, sendTestRaid, sendTestFollow } = useTestMode({
     enabled: isTestMode,
     onMessage: handleMessage,
     onSub: handleSub,
     onCheer: handleCheer,
     onRaid: handleRaid,
+    onFollow: handleFollow,
   });
 
   // Get current alert (only show one at a time)
@@ -107,7 +118,13 @@ function ChatOverlay() {
     <CRTContainer>
       {/* Test Mode Controls (only visible in test mode) */}
       {isTestMode && (
-        <div className="fixed top-4 right-4 z-[300] flex gap-2 pixel-text text-xs">
+        <div className="fixed top-4 right-4 z-[300] flex gap-2 pixel-text text-xs flex-wrap justify-end">
+          <button
+            onClick={sendTestFollow}
+            className="px-3 py-2 bg-green-500 text-black rounded hover:bg-green-400"
+          >
+            TEST FOLLOW
+          </button>
           <button
             onClick={sendTestSub}
             className="px-3 py-2 bg-yellow-500 text-black rounded hover:bg-yellow-400"
@@ -122,7 +139,7 @@ function ChatOverlay() {
           </button>
           <button
             onClick={sendTestRaid}
-            className="px-3 py-2 bg-green-500 text-black rounded hover:bg-green-400"
+            className="px-3 py-2 bg-red-500 text-black rounded hover:bg-red-400"
           >
             TEST RAID
           </button>
@@ -173,6 +190,15 @@ function ChatOverlay() {
           key={currentAlert.data.id}
           raider={currentAlert.data.raider}
           viewers={currentAlert.data.viewers}
+          onComplete={handleAlertComplete}
+          duration={ALERT_DURATION}
+        />
+      )}
+
+      {currentAlert?.type === 'follow' && (
+        <FollowerAlert
+          key={currentAlert.data.id}
+          username={currentAlert.data.username}
           onComplete={handleAlertComplete}
           duration={ALERT_DURATION}
         />

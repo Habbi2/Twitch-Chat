@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useCallback } from 'react';
-import type { ChatMessage, SubEvent, CheerEvent, RaidEvent } from './useTwitchChat';
+import type { ChatMessage, SubEvent, CheerEvent, RaidEvent, FollowEvent } from './useTwitchChat';
 
 interface UseTestModeOptions {
   enabled: boolean;
@@ -9,6 +9,7 @@ interface UseTestModeOptions {
   onSub?: (sub: SubEvent) => void;
   onCheer?: (cheer: CheerEvent) => void;
   onRaid?: (raid: RaidEvent) => void;
+  onFollow?: (follow: FollowEvent) => void;
 }
 
 // Sample messages for testing
@@ -50,13 +51,14 @@ export function useTestMode({
   onSub,
   onCheer,
   onRaid,
+  onFollow,
 }: UseTestModeOptions) {
-  const callbacksRef = useRef({ onMessage, onSub, onCheer, onRaid });
+  const callbacksRef = useRef({ onMessage, onSub, onCheer, onRaid, onFollow });
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
-    callbacksRef.current = { onMessage, onSub, onCheer, onRaid };
-  }, [onMessage, onSub, onCheer, onRaid]);
+    callbacksRef.current = { onMessage, onSub, onCheer, onRaid, onFollow };
+  }, [onMessage, onSub, onCheer, onRaid, onFollow]);
 
   const sendTestMessage = useCallback(() => {
     const { username, message } = getRandomMessage();
@@ -103,6 +105,15 @@ export function useTestMode({
     callbacksRef.current.onRaid?.(raidEvent);
   }, []);
 
+  const sendTestFollow = useCallback(() => {
+    const names = ['NewViewer123', 'ArcadeFan', 'RetroLover', 'PixelHero', 'NeonDreamer'];
+    const followEvent: FollowEvent = {
+      id: generateId(),
+      username: names[Math.floor(Math.random() * names.length)],
+    };
+    callbacksRef.current.onFollow?.(followEvent);
+  }, []);
+
   useEffect(() => {
     if (!enabled) {
       if (intervalRef.current) {
@@ -132,5 +143,6 @@ export function useTestMode({
     sendTestSub,
     sendTestBits,
     sendTestRaid,
+    sendTestFollow,
   };
 }

@@ -36,12 +36,18 @@ export interface RaidEvent {
   viewers: number;
 }
 
+export interface FollowEvent {
+  id: string;
+  username: string;
+}
+
 interface UseTwitchChatOptions {
   channel: string;
   onMessage?: (message: ChatMessage) => void;
   onSub?: (sub: SubEvent) => void;
   onCheer?: (cheer: CheerEvent) => void;
   onRaid?: (raid: RaidEvent) => void;
+  onFollow?: (follow: FollowEvent) => void;
 }
 
 // Arcade color palette for users without custom colors
@@ -74,14 +80,15 @@ export function useTwitchChat({
   onSub,
   onCheer,
   onRaid,
+  onFollow,
 }: UseTwitchChatOptions) {
   const clientRef = useRef<tmi.Client | null>(null);
-  const callbacksRef = useRef({ onMessage, onSub, onCheer, onRaid });
+  const callbacksRef = useRef({ onMessage, onSub, onCheer, onRaid, onFollow });
 
   // Keep callbacks ref updated
   useEffect(() => {
-    callbacksRef.current = { onMessage, onSub, onCheer, onRaid };
-  }, [onMessage, onSub, onCheer, onRaid]);
+    callbacksRef.current = { onMessage, onSub, onCheer, onRaid, onFollow };
+  }, [onMessage, onSub, onCheer, onRaid, onFollow]);
 
   const connect = useCallback(async () => {
     if (clientRef.current) {
