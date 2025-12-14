@@ -99,26 +99,49 @@ function ChatOverlay() {
   // Helper to generate unique IDs
   const generateId = () => `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 
-  // Connect to Twitch chat (disabled in test mode)
+  // Connect to Twitch chat for messages (subs/bits/raids come from Streamlabs if token provided)
   useTwitchChat({
     channel: isTestMode ? '' : TWITCH_CHANNEL, // Empty channel disables connection
     onMessage: isTestMode ? undefined : handleMessage,
-    onSub: isTestMode ? undefined : handleSub,
-    onCheer: isTestMode ? undefined : handleCheer,
-    onRaid: isTestMode ? undefined : handleRaid,
-    onFollow: isTestMode ? undefined : handleFollow,
+    // Only use tmi.js for subs/bits/raids if Streamlabs is NOT connected
+    onSub: isTestMode || streamlabsToken ? undefined : handleSub,
+    onCheer: isTestMode || streamlabsToken ? undefined : handleCheer,
+    onRaid: isTestMode || streamlabsToken ? undefined : handleRaid,
+    onFollow: undefined, // Follows not available via tmi.js
   });
 
-  // Connect to Streamlabs for follower alerts (pass token via URL: ?streamlabs=YOUR_TOKEN)
+  // Connect to Streamlabs for all alerts (pass token via URL: ?streamlabs=YOUR_TOKEN)
   useStreamlabs({
     token: streamlabsToken,
     onFollow: (username) => {
       handleFollow({ id: generateId(), username });
     },
-    // Streamlabs can also handle subs/bits/raids - uncomment to use instead of tmi.js:
-    // onSub: (data) => handleSub({ id: generateId(), ...data }),
-    // onBits: (data) => handleCheer({ id: generateId(), username: data.username, bits: data.amount, message: data.message || '' }),
-    // onRaid: (data) => handleRaid({ id: generateId(), ...data }),
+    onSub: (data) => {
+      handleSub({
+        id: generateId(),
+        username: data.username,
+        months: data.months,
+        message: data.message,
+        tier: data.tier,
+        isGift: data.isGift,
+        gifter: data.gifter,
+      });
+    },
+    onBits: (data) => {
+      handleCheer({
+        id: generateId(),
+        username: data.username,
+        bits: data.amount,
+        message: data.message || '',
+      });
+    },
+    onRaid: (data) => {
+      handleRaid({
+        id: generateId(),
+        raider: data.raider,
+        viewers: data.viewers,
+      });
+    },
   });
 
   // Test mode for previewing without live chat
