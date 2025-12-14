@@ -16,6 +16,7 @@ import {
   type RaidEvent,
   type FollowEvent,
 } from '@/hooks/useTwitchChat';
+import { useStreamlabs } from '@/hooks/useStreamlabs';
 import { useTestMode } from '@/hooks/useTestMode';
 
 // Configuration
@@ -24,6 +25,10 @@ const MAX_MESSAGES = 50;
 const MAX_TYPING_MESSAGES = 5;
 const MESSAGE_LIFETIME = 18000; // 18 seconds
 const ALERT_DURATION = 8000; // 8 seconds
+
+// Streamlabs Socket API Token (get from https://streamlabs.com/dashboard#/settings/api-settings)
+// Pass via URL: ?streamlabs=YOUR_TOKEN or ?streamlabs=YOUR_TOKEN&test=true
+const STREAMLABS_TOKEN_PARAM = 'streamlabs';
 
 interface DisplayMessage extends ChatMessage {
   showTypewriter: boolean;
@@ -38,6 +43,7 @@ type AlertType =
 function ChatOverlay() {
   const searchParams = useSearchParams();
   const isTestMode = searchParams.get('test') === 'true';
+  const streamlabsToken = searchParams.get(STREAMLABS_TOKEN_PARAM);
   
   const [messages, setMessages] = useState<DisplayMessage[]>([]);
   const [alerts, setAlerts] = useState<AlertType[]>([]);
@@ -90,8 +96,10 @@ function ChatOverlay() {
     setAlerts((prev) => prev.slice(1)); // Remove first alert
   }, []);
 
+  // Helper to generate unique IDs
+  const generateId = () => `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+
   // Connect to Twitch chat (disabled in test mode)
-  // Note: Follower events require Twitch EventSub API (not available via tmi.js)
   useTwitchChat({
     channel: isTestMode ? '' : TWITCH_CHANNEL, // Empty channel disables connection
     onMessage: isTestMode ? undefined : handleMessage,
@@ -99,6 +107,18 @@ function ChatOverlay() {
     onCheer: isTestMode ? undefined : handleCheer,
     onRaid: isTestMode ? undefined : handleRaid,
     onFollow: isTestMode ? undefined : handleFollow,
+  });
+
+  // Connect to Streamlabs for follower alerts (pass token via URL: ?streamlabs=YOUR_TOKEN)
+  useStreamlabs({
+    token: streamlabsToken,
+    onFollow: (username) => {
+      handleFollow({ id: generateId(), username });
+    },
+    // Streamlabs can also handle subs/bits/raids - uncomment to use instead of tmi.js:
+    // onSub: (data) => handleSub({ id: generateId(), ...data }),
+    // onBits: (data) => handleCheer({ id: generateId(), username: data.username, bits: data.amount, message: data.message || '' }),
+    // onRaid: (data) => handleRaid({ id: generateId(), ...data }),
   });
 
   // Test mode for previewing without live chat
