@@ -19,7 +19,7 @@ export function FollowerAlert({
   useEffect(() => {
     // Fire confetti on mount (lighter than sub)
     fireSubConfetti();
-    createScreenFlash('#00FF00', 100);
+    createScreenFlash('#5c3a21', 100);
 
     // Start exit animation
     const exitTimer = setTimeout(() => {
@@ -39,24 +39,29 @@ export function FollowerAlert({
 
   return (
     <div className={`alert-container ${isExiting ? 'alert-exit' : 'alert-enter'}`}>
+      {/* Static pixel skull decoration */}
+      <div className="raid-ships">
+        <span className="pixel-ship">💀</span>
+      </div>
+
       <div
         className="alert-box"
         style={{
-          borderColor: '#00FF00',
-          boxShadow: '0 0 30px #00FF00',
+          borderColor: '#8b0000',
+          boxShadow: '0 0 30px rgba(139, 0, 0, 0.4), 6px 6px 0 rgba(0, 0, 0, 0.6)',
         }}
       >
         <div
-          className="alert-title chromatic-text-strong"
-          style={{ color: '#00FF00' }}
+          className="alert-title gothic-text-strong"
+          style={{ color: '#e8e4d9' }}
         >
-          ✨ NEW FOLLOWER!
+          💀 A NEW HOLLOW JOINS!
         </div>
-        <div className="alert-subtitle" style={{ color: '#FFFFFF', fontSize: '18px' }}>
+        <div className="alert-subtitle" style={{ color: '#a89f8f', fontSize: '18px' }}>
           {username}
         </div>
-        <div className="mt-2 text-xs pixel-text" style={{ color: '#00FF00' }}>
-          WELCOME TO THE CREW!
+        <div className="mt-2 text-xs pixel-text" style={{ color: '#5c3a21' }}>
+          WELCOME, UNDEAD...
         </div>
       </div>
     </div>

@@ -2,21 +2,37 @@
 @import "tailwindcss";
 
 :root {
-  /* Arcade Color Palette */
-  --arcade-red: #FF0000;
-  --arcade-green: #00FF00;
-  --arcade-yellow: #FFFF00;
-  --arcade-cyan: #00FFFF;
-  --arcade-magenta: #FF00FF;
-  --arcade-orange: #FF6600;
-  --arcade-pink: #FFB8FF;
-  --arcade-purple: #BF00FF;
-  --arcade-white: #FFFFFF;
-  --neon-green: #39FF14;
+  /* Dark Souls 8-Bit Gothic Color Palette */
+  --bg-primary: #0a0808;
+  --bg-secondary: #12100f;
+  --bg-tertiary: #1a1614;
+  --bg-card: rgba(10, 8, 8, 0.92);
   
-  /* CRT Effects - Toned down for readability */
-  --scanline-opacity: 0.08;
-  --flicker-intensity: 0.3;
+  /* Blood and Bone */
+  --blood-red: #8b0000;
+  --blood-dark: #4a0000;
+  --bone-white: #e8e4d9;
+  --bone-muted: #a89f8f;
+  --ash-gray: #5a524a;
+  
+  /* Gothic Accents */
+  --ember-orange: #b8860b;
+  --rust-brown: #5c3a21;
+  --soul-green: #7a9b8c;
+  --void-blue: #4a6a8a;
+  
+  /* Legacy compatibility aliases */
+  --arcade-red: var(--blood-red);
+  --arcade-green: var(--soul-green);
+  --arcade-yellow: var(--ember-orange);
+  --arcade-cyan: var(--void-blue);
+  --arcade-magenta: var(--blood-red);
+  --arcade-orange: var(--ember-orange);
+  --arcade-white: var(--bone-white);
+  
+  /* CRT Effects - Reduced for FPS safety */
+  --scanline-opacity: 0.01;
+  --flicker-intensity: 0;
 }
 
 * {
@@ -34,7 +50,7 @@ html, body {
 }
 
 /* ============================================
-   CRT CONTAINER - HEAVY EFFECTS
+   CRT CONTAINER - GOTHIC FRAME
    ============================================ */
 
 .crt-container {
@@ -43,11 +59,15 @@ html, body {
   width: 100vw;
   height: 100vh;
   overflow: hidden;
-  /* Barrel distortion approximation */
-  border-radius: 50px / 30px;
+  /* Remove barrel distortion for cleaner look */
+  border-radius: 0;
+  border: 3px solid var(--blood-red);
+  box-shadow: 
+    inset 0 0 0 1px rgba(232, 228, 217, 0.1),
+    0 0 20px rgba(139, 0, 0, 0.3);
 }
 
-/* Scanlines Overlay - Static for performance */
+/* Scanlines Overlay - Reduced opacity for FPS */
 .crt-container::before {
   content: "";
   position: absolute;
@@ -68,70 +88,129 @@ html, body {
 
 /* Flicker removed for performance */
 
-/* Vignette Effect */
+/* Vignette Effect - Gothic darker */
 .vignette {
   position: fixed;
   inset: 0;
-  box-shadow: inset 0 0 150px rgba(0, 0, 0, 0.5);
+  box-shadow: inset 0 0 200px rgba(0, 0, 0, 0.7);
   pointer-events: none;
   z-index: 99;
-  border-radius: 30px / 20px;
+  border-radius: 0;
 }
 
 /* Rolling line removed for performance */
 
 /* ============================================
-   CHROMATIC ABERRATION TEXT
+   GOTHIC TEXT EFFECTS
    ============================================ */
 
-.chromatic-text {
+.gothic-text {
+  text-shadow: 2px 2px 0 var(--blood-red);
+}
+
+.gothic-text-strong {
   text-shadow: 
-    -0.5px 0 var(--arcade-red),
-    0.5px 0 var(--arcade-cyan);
+    2px 2px 0 var(--blood-red),
+    4px 4px 0 rgba(0, 0, 0, 0.5);
+}
+
+/* Legacy chromatic - now gothic */
+.chromatic-text {
+  text-shadow: 2px 2px 0 rgba(139, 0, 0, 0.5);
 }
 
 .chromatic-text-strong {
   text-shadow: 
-    -1px 0 var(--arcade-red),
-    1px 0 var(--arcade-cyan),
+    2px 2px 0 var(--blood-red),
     0 0 8px currentColor;
 }
 
 /* ============================================
-   MESSAGE STYLES
+   PIXEL SKULL CSS ART
+   ============================================ */
+
+.pixel-skull {
+  width: 2px;
+  height: 2px;
+  position: relative;
+  display: inline-block;
+  /* 8x8 pixel skull using box-shadow */
+  box-shadow:
+    /* Row 1 - Top of skull */
+    4px 0 0 var(--bone-white), 6px 0 0 var(--bone-white), 8px 0 0 var(--bone-white), 10px 0 0 var(--bone-white),
+    /* Row 2 */
+    2px 2px 0 var(--bone-white), 4px 2px 0 var(--bone-white), 6px 2px 0 var(--bone-white), 8px 2px 0 var(--bone-white), 10px 2px 0 var(--bone-white), 12px 2px 0 var(--bone-white),
+    /* Row 3 - Eyes */
+    2px 4px 0 var(--bone-white), 4px 4px 0 var(--blood-red), 6px 4px 0 var(--bone-white), 8px 4px 0 var(--bone-white), 10px 4px 0 var(--blood-red), 12px 4px 0 var(--bone-white),
+    /* Row 4 */
+    2px 6px 0 var(--bone-white), 4px 6px 0 var(--bone-white), 6px 6px 0 var(--blood-red), 8px 6px 0 var(--blood-red), 10px 6px 0 var(--bone-white), 12px 6px 0 var(--bone-white),
+    /* Row 5 - Teeth */
+    4px 8px 0 var(--bone-white), 6px 8px 0 var(--bg-primary), 8px 8px 0 var(--bone-white), 10px 8px 0 var(--bg-primary),
+    /* Row 6 - Jaw */
+    6px 10px 0 var(--bone-white), 8px 10px 0 var(--bone-white);
+}
+
+.pixel-skull-large {
+  transform: scale(2);
+  margin: 12px;
+}
+
+/* ============================================
+   GLASS PANEL - GOTHIC CARD STYLE
+   ============================================ */
+
+.glass-panel {
+  background: var(--bg-card);
+  border: 3px solid var(--blood-red);
+  border-radius: 4px;
+  position: relative;
+  box-shadow: 
+    4px 4px 0 rgba(0, 0, 0, 0.5),
+    inset 0 0 0 1px rgba(232, 228, 217, 0.05);
+}
+
+/* ============================================
+   MESSAGE STYLES - GOTHIC
    ============================================ */
 
 .message-container {
   position: fixed;
-  padding: 8px 12px;
-  background: rgba(0, 0, 0, 0.8);
-  border: 2px solid currentColor;
+  padding: 10px 14px;
+  background: var(--bg-card);
+  border: 2px solid var(--blood-red);
   border-radius: 4px;
   max-width: 400px;
   contain: layout style paint;
+  content-visibility: auto;
   z-index: 10;
+  box-shadow: 
+    3px 3px 0 rgba(0, 0, 0, 0.5),
+    inset 0 0 0 1px rgba(232, 228, 217, 0.05);
+  will-change: transform, opacity;
 }
 
 .message-username {
   font-family: 'Press Start 2P', cursive;
   font-size: 10px;
-  margin-bottom: 4px;
+  margin-bottom: 6px;
   image-rendering: pixelated;
-  text-shadow: 0 0 4px currentColor;
+  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.8);
+  color: var(--bone-white);
 }
 
 .message-text {
   font-family: 'VT323', monospace;
   font-size: 22px;
-  color: var(--arcade-white);
+  color: var(--bone-white);
   line-height: 1.2;
   word-wrap: break-word;
+  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.5);
 }
 
-/* Blinking Cursor */
+/* Blinking Cursor - Gothic */
 .cursor {
   display: inline-block;
-  color: var(--arcade-green);
+  color: var(--blood-red);
   animation: blink 0.7s step-end infinite;
 }
 
@@ -171,7 +250,7 @@ html, body {
 }
 
 /* ============================================
-   ALERT STYLES
+   ALERT STYLES - GOTHIC
    ============================================ */
 
 .alert-container {
@@ -181,64 +260,82 @@ html, body {
   transform: translate(-50%, -50%);
   z-index: 200;
   text-align: center;
+  will-change: transform, opacity;
 }
 
 .alert-box {
-  background: rgba(0, 0, 0, 0.95);
-  border: 4px solid;
+  background: var(--bg-card);
+  border: 4px solid var(--blood-red);
+  border-radius: 4px;
   padding: 24px 48px;
   font-family: 'Press Start 2P', cursive;
+  box-shadow: 
+    6px 6px 0 rgba(0, 0, 0, 0.6),
+    inset 0 0 0 2px rgba(232, 228, 217, 0.05);
 }
 
 .alert-title {
   font-size: 24px;
   margin-bottom: 16px;
-  animation: pixelFlash 0.3s infinite;
+  color: var(--bone-white);
+  text-shadow: 3px 3px 0 var(--blood-red);
+  /* Limited animation - 3 cycles only */
+  animation: pixelFlash 0.5s steps(2) 3;
 }
 
 @keyframes pixelFlash {
   0%, 50% { opacity: 1; }
-  51%, 100% { opacity: 0.7; }
+  51%, 100% { opacity: 0.8; }
 }
 
 .alert-subtitle {
   font-size: 14px;
-  color: var(--arcade-white);
+  color: var(--bone-muted);
 }
 
 .alert-amount {
   font-size: 32px;
   margin-top: 12px;
+  color: var(--bone-white);
+  text-shadow: 2px 2px 0 var(--blood-red);
 }
 
-/* Raid Ships Animation */
-.raid-ships {
+/* Pixel Skulls for Raids - Static */
+.raid-skulls {
   position: absolute;
-  top: -50px;
+  top: -40px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
-  gap: 8px;
+  gap: 16px;
+}
+
+.raid-skull {
+  width: 2px;
+  height: 2px;
+  /* Mini pixel skull */
+  box-shadow:
+    4px 0 0 var(--bone-white), 6px 0 0 var(--bone-white), 8px 0 0 var(--bone-white), 10px 0 0 var(--bone-white),
+    2px 2px 0 var(--bone-white), 4px 2px 0 var(--bone-white), 6px 2px 0 var(--bone-white), 8px 2px 0 var(--bone-white), 10px 2px 0 var(--bone-white), 12px 2px 0 var(--bone-white),
+    2px 4px 0 var(--bone-white), 4px 4px 0 var(--blood-red), 6px 4px 0 var(--bone-white), 8px 4px 0 var(--bone-white), 10px 4px 0 var(--blood-red), 12px 4px 0 var(--bone-white),
+    4px 6px 0 var(--bone-white), 6px 6px 0 #0a0808, 8px 6px 0 var(--bone-white), 10px 6px 0 #0a0808;
+}
+
+/* Legacy raid ships - now skulls */
+.raid-ships {
+  position: absolute;
+  top: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 12px;
 }
 
 .pixel-ship {
-  font-size: 20px;
-  color: var(--arcade-green);
-  text-shadow: 0 0 8px var(--arcade-green);
-  animation: shipFloat 1s ease-in-out infinite alternate;
-}
-
-.pixel-ship:nth-child(2n) {
-  animation-delay: 0.2s;
-}
-
-.pixel-ship:nth-child(3n) {
-  animation-delay: 0.4s;
-}
-
-@keyframes shipFloat {
-  0% { transform: translateY(0); }
-  100% { transform: translateY(-8px); }
+  font-size: 16px;
+  color: var(--bone-white);
+  text-shadow: 0 0 4px var(--blood-red);
+  /* Static - no animation for FPS */
 }
 
 /* Alert Enter/Exit */
@@ -275,7 +372,7 @@ html, body {
   animation: alertExit 0.3s ease-in forwards;
 }
 
-/* Screen Flash for Events */
+/* Screen Flash for Events - Gothic colors */
 .screen-flash {
   position: fixed;
   inset: 0;
@@ -285,12 +382,12 @@ html, body {
 }
 
 @keyframes screenFlash {
-  0% { opacity: 0.5; }
+  0% { opacity: 0.4; }
   100% { opacity: 0; }
 }
 
 /* ============================================
-   UTILITY CLASSES
+   UTILITY CLASSES - GOTHIC
    ============================================ */
 
 .pixel-text {
@@ -302,3 +399,18 @@ html, body {
 .terminal-text {
   font-family: 'VT323', monospace;
 }
+
+/* Gothic color utilities */
+.text-bone { color: var(--bone-white); }
+.text-blood { color: var(--blood-red); }
+.text-ash { color: var(--ash-gray); }
+.text-ember { color: var(--ember-orange); }
+.text-soul { color: var(--soul-green); }
+
+/* Gothic border accent */
+.border-blood { border-color: var(--blood-red); }
+.border-bone { border-color: var(--bone-white); }
+
+/* Gothic glow effects - use sparingly */
+.glow-blood { box-shadow: 0 0 12px rgba(139, 0, 0, 0.5); }
+.glow-ember { box-shadow: 0 0 12px rgba(184, 134, 11, 0.4); }

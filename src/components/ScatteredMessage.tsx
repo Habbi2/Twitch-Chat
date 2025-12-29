@@ -39,7 +39,7 @@ export function ScatteredMessage({
   // Typewriter effect - only for recent messages
   const { displayedText, isComplete } = useTypewriter({
     text: message,
-    speed: showTypewriter ? 25 : 0,
+    speed: showTypewriter ? 40 : 0, // Increased from 25ms for FPS
   });
 
   // Auto-remove after lifetime
@@ -67,18 +67,16 @@ export function ScatteredMessage({
       style={{
         top: `${position.top}%`,
         left: `${position.left}%`,
-        color: color,
-        borderColor: color,
         ['--rotation' as string]: `${position.rotation}deg`,
       }}
     >
-      {/* Username */}
+      {/* Username - Gothic styled */}
       <div className="message-username" style={{ color }}>
         {username}
       </div>
 
-      {/* Message Text */}
-      <div className="message-text chromatic-text">
+      {/* Message Text - Gothic text shadow */}
+      <div className="message-text gothic-text">
         {displayText}
         {showCursor && <span className="cursor">▌</span>}
       </div>

@@ -21,8 +21,8 @@ import { useTestMode } from '@/hooks/useTestMode';
 
 // Configuration
 const TWITCH_CHANNEL = 'Habbi3';
-const MAX_MESSAGES = 50;
-const MAX_TYPING_MESSAGES = 5;
+const MAX_MESSAGES = 30; // Reduced from 50 for FPS
+const MAX_TYPING_MESSAGES = 3; // Reduced from 5 for FPS
 const MESSAGE_LIFETIME = 18000; // 18 seconds
 const ALERT_DURATION = 8000; // 8 seconds
 

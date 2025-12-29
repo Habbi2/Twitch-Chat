@@ -22,7 +22,7 @@ export function RaidAlert({
   useEffect(() => {
     // Fire raid celebration on mount
     cleanupRef.current = fireRaidCelebration(viewers);
-    createScreenFlash('#00FF00', 200);
+    createScreenFlash('#8b0000', 200);
 
     // Start exit animation
     const exitTimer = setTimeout(() => {
@@ -42,22 +42,19 @@ export function RaidAlert({
     };
   }, [viewers, duration, onComplete]);
 
-  // Generate ships based on viewer count (max 15 ships)
-  const shipCount = Math.min(Math.ceil(viewers / 10), 15);
+  // Generate skulls based on viewer count (max 10 skulls)
+  const skullCount = Math.min(Math.ceil(viewers / 15), 10);
 
   return (
     <div className={`alert-container ${isExiting ? 'alert-exit' : 'alert-enter'}`}>
-      {/* Animated Pixel Ships */}
+      {/* Static Pixel Skulls */}
       <div className="raid-ships">
-        {Array.from({ length: shipCount }).map((_, i) => (
+        {Array.from({ length: skullCount }).map((_, i) => (
           <span
             key={i}
             className="pixel-ship"
-            style={{
-              animationDelay: `${i * 0.1}s`,
-            }}
           >
-            ▼
+            ☠
           </span>
         ))}
       </div>
@@ -65,24 +62,24 @@ export function RaidAlert({
       <div
         className="alert-box"
         style={{
-          borderColor: '#00FF00',
-          boxShadow: '0 0 50px #00FF00, inset 0 0 20px rgba(0, 255, 0, 0.2)',
+          borderColor: '#8b0000',
+          boxShadow: '0 0 50px rgba(139, 0, 0, 0.6), inset 0 0 20px rgba(139, 0, 0, 0.2), 6px 6px 0 rgba(0, 0, 0, 0.6)',
         }}
       >
         <div
-          className="alert-title chromatic-text-strong"
-          style={{ color: '#FF0000' }}
+          className="alert-title gothic-text-strong"
+          style={{ color: '#e8e4d9' }}
         >
-          ⚠ RAID INCOMING! ⚠
+          ⚔ INVASION INCOMING! ⚔
         </div>
-        <div className="alert-subtitle" style={{ color: '#00FF00' }}>
+        <div className="alert-subtitle" style={{ color: '#b8860b' }}>
           {raider}
         </div>
-        <div className="alert-amount" style={{ color: '#00FF00' }}>
-          ×{viewers.toLocaleString()} PLAYERS
+        <div className="alert-amount" style={{ color: '#e8e4d9' }}>
+          ×{viewers.toLocaleString()} PHANTOMS
         </div>
-        <div className="mt-2 text-xs pixel-text" style={{ color: '#FFFF00' }}>
-          PREPARE FOR BATTLE!
+        <div className="mt-2 text-xs pixel-text" style={{ color: '#8b0000' }}>
+          PREPARE TO DIE!
         </div>
       </div>
     </div>
