@@ -24,7 +24,7 @@ export function BitsAlert({
   useEffect(() => {
     // Fire fireworks on mount
     cleanupRef.current = fireBitsFireworks(bits);
-    createScreenFlash('#b8860b', 150);
+    createScreenFlash('#8b5cf6', 150);
 
     // Start exit animation
     const exitTimer = setTimeout(() => {
@@ -44,44 +44,44 @@ export function BitsAlert({
     };
   }, [bits, duration, onComplete]);
 
-  // Color intensity based on bit amount - Gothic palette
+  // Color intensity based on bit amount - Neon palette
   const getColorForBits = (bits: number): string => {
-    if (bits >= 10000) return '#e8e4d9'; // Bone white for huge donations
-    if (bits >= 5000) return '#b8860b'; // Ember gold
-    if (bits >= 1000) return '#8b0000'; // Blood red
-    if (bits >= 100) return '#5c3a21'; // Rust brown
-    return '#a89f8f'; // Ash gray for smaller
+    if (bits >= 10000) return '#ffffff'; // Pure white for huge donations
+    if (bits >= 5000) return '#00f0ff'; // Neon cyan
+    if (bits >= 1000) return '#8b5cf6'; // Neon purple
+    if (bits >= 100) return '#00ff88'; // Neon green
+    return '#b0b0c0'; // Muted white for smaller
   };
 
   const color = getColorForBits(bits);
 
   return (
     <div className={`alert-container ${isExiting ? 'alert-exit' : 'alert-enter'}`}>
-      {/* Static pixel skull decorations */}
+      {/* Neon icon decorations */}
       <div className="raid-ships">
-        <span className="pixel-ship">🔥</span>
-        <span className="pixel-ship">💀</span>
-        <span className="pixel-ship">🔥</span>
+        <span className="pixel-ship">💎</span>
+        <span className="pixel-ship">✨</span>
+        <span className="pixel-ship">💎</span>
       </div>
 
       <div
         className="alert-box"
         style={{
-          borderColor: '#8b0000',
-          boxShadow: '0 0 40px rgba(139, 0, 0, 0.5), 6px 6px 0 rgba(0, 0, 0, 0.6)',
+          borderColor: '#8b5cf6',
+          boxShadow: '0 0 50px rgba(139, 92, 246, 0.5), 0 0 100px rgba(0, 240, 255, 0.3)',
         }}
       >
-        <div className="alert-title gothic-text-strong" style={{ color: '#e8e4d9' }}>
-          🔥 SOULS DONATED! 🔥
+        <div className="alert-title neon-text-strong" style={{ color: '#ffffff' }}>
+          💎 BITS CHEERED! 💎
         </div>
-        <div className="alert-subtitle" style={{ color: '#a89f8f' }}>{username} offers tribute</div>
-        <div className="alert-amount" style={{ color }}>
-          {bits.toLocaleString()} SOULS
+        <div className="alert-subtitle" style={{ color: '#b0b0c0' }}>{username} cheered</div>
+        <div className="alert-amount" style={{ color, textShadow: `0 0 20px ${color}` }}>
+          {bits.toLocaleString()} BITS
         </div>
         {message && (
           <div
             className="mt-4 text-base terminal-text"
-            style={{ color: '#e8e4d9', maxWidth: '400px' }}
+            style={{ color: '#ffffff', maxWidth: '400px' }}
           >
             &quot;{message}&quot;
           </div>

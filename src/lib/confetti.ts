@@ -1,7 +1,7 @@
 import confetti from 'canvas-confetti';
 
-// Gothic color palette for confetti - bone, blood, ember, ash
-const GOTHIC_COLORS = ['#e8e4d9', '#8b0000', '#b8860b', '#5c3a21', '#a89f8f', '#4a0000'];
+// Neon color palette for confetti - cyan, purple, white, pink, green
+const NEON_COLORS = ['#00f0ff', '#8b5cf6', '#ffffff', '#ff00ff', '#00ff88', '#00a0aa'];
 
 /**
  * Fire pixel-style confetti for subscriber events - FPS optimized
@@ -11,8 +11,8 @@ export function fireSubConfetti() {
     particleCount: 40, // Reduced from 100
     spread: 70,
     origin: { y: 0.6 },
-    colors: GOTHIC_COLORS,
-    shapes: ['square'] as confetti.Shape[], // Pixel-style squares only!
+    colors: NEON_COLORS,
+    shapes: ['circle', 'square'] as confetti.Shape[], // Mix of shapes
     scalar: 1.5,
     gravity: 1.2,
     ticks: 100, // Reduced from 150
@@ -61,7 +61,7 @@ export function fireBitsFireworks(bits: number) {
   const animationEnd = Date.now() + duration;
   const intensity = Math.min(bits / 500, 1) + 0.3; // 0.3 to 1.3 intensity
 
-  const colors = GOTHIC_COLORS;
+  const colors = NEON_COLORS;
 
   const interval = setInterval(() => {
     const timeLeft = animationEnd - Date.now();
@@ -106,8 +106,8 @@ export function fireRaidCelebration(viewers: number) {
     spread: 180,
     startVelocity: 50,
     gravity: 0.6,
-    shapes: ['square'] as confetti.Shape[],
-    colors: GOTHIC_COLORS,
+    shapes: ['circle', 'square'] as confetti.Shape[],
+    colors: NEON_COLORS,
     origin: { x: 0.5, y: 0.3 },
     ticks: 150, // Reduced from 200
     scalar: 2,
@@ -123,15 +123,15 @@ export function fireRaidCelebration(viewers: number) {
       return;
     }
 
-    // Skulls arriving from sides - reduced
+    // Neon particles arriving from sides - reduced
     confetti({
       particleCount: 10, // Reduced from 20
       angle: 60,
       spread: 30,
       startVelocity: 40,
       origin: { x: 0, y: 0.3 },
-      colors: ['#e8e4d9', '#8b0000'],
-      shapes: ['square'] as confetti.Shape[],
+      colors: ['#00f0ff', '#8b5cf6'],
+      shapes: ['circle', 'square'] as confetti.Shape[],
       scalar: 1.5,
       disableForReducedMotion: true,
     });
@@ -142,8 +142,8 @@ export function fireRaidCelebration(viewers: number) {
       spread: 30,
       startVelocity: 40,
       origin: { x: 1, y: 0.3 },
-      colors: ['#e8e4d9', '#8b0000'],
-      shapes: ['square'] as confetti.Shape[],
+      colors: ['#00f0ff', '#8b5cf6'],
+      shapes: ['circle', 'square'] as confetti.Shape[],
       scalar: 1.5,
       disableForReducedMotion: true,
     });

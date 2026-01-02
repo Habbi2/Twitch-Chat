@@ -70,13 +70,13 @@ export function ScatteredMessage({
         ['--rotation' as string]: `${position.rotation}deg`,
       }}
     >
-      {/* Username - Gothic styled */}
+      {/* Username - Neon styled */}
       <div className="message-username" style={{ color }}>
         {username}
       </div>
 
-      {/* Message Text - Gothic text shadow */}
-      <div className="message-text gothic-text">
+      {/* Message Text - Neon text shadow */}
+      <div className="message-text neon-text">
         {displayText}
         {showCursor && <span className="cursor">▌</span>}
       </div>

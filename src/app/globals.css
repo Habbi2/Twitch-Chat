@@ -1,38 +1,38 @@
-@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Exo+2:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
 
 :root {
-  /* Dark Souls 8-Bit Gothic Color Palette */
-  --bg-primary: #0a0808;
-  --bg-secondary: #12100f;
-  --bg-tertiary: #1a1614;
-  --bg-card: rgba(10, 8, 8, 0.92);
+  /* Neon Gaming Color Palette - Cyan & Purple */
+  --bg-primary: #0a0a0f;
+  --bg-secondary: #12121a;
+  --bg-tertiary: #1a1a25;
+  --bg-card: rgba(10, 10, 15, 0.85);
   
-  /* Blood and Bone */
-  --blood-red: #8b0000;
-  --blood-dark: #4a0000;
-  --bone-white: #e8e4d9;
-  --bone-muted: #a89f8f;
-  --ash-gray: #5a524a;
+  /* Neon Cyan */
+  --neon-cyan: #00f0ff;
+  --neon-cyan-dim: #00a0aa;
+  --neon-cyan-glow: rgba(0, 240, 255, 0.5);
   
-  /* Gothic Accents */
-  --ember-orange: #b8860b;
-  --rust-brown: #5c3a21;
-  --soul-green: #7a9b8c;
-  --void-blue: #4a6a8a;
+  /* Neon Purple */
+  --neon-purple: #8b5cf6;
+  --neon-purple-dim: #6d48c4;
+  --neon-purple-glow: rgba(139, 92, 246, 0.5);
+  
+  /* Accent Colors */
+  --neon-pink: #ff00ff;
+  --neon-green: #00ff88;
+  --pure-white: #ffffff;
+  --muted-white: #b0b0c0;
+  --dark-gray: #3a3a4a;
   
   /* Legacy compatibility aliases */
-  --arcade-red: var(--blood-red);
-  --arcade-green: var(--soul-green);
-  --arcade-yellow: var(--ember-orange);
-  --arcade-cyan: var(--void-blue);
-  --arcade-magenta: var(--blood-red);
-  --arcade-orange: var(--ember-orange);
-  --arcade-white: var(--bone-white);
+  --arcade-cyan: var(--neon-cyan);
+  --arcade-magenta: var(--neon-purple);
+  --arcade-white: var(--pure-white);
   
-  /* CRT Effects - Reduced for FPS safety */
-  --scanline-opacity: 0.01;
-  --flicker-intensity: 0;
+  /* Effects */
+  --scanline-opacity: 0.02;
+  --glow-intensity: 1;
 }
 
 * {
@@ -46,11 +46,11 @@ html, body {
   height: 100vh;
   overflow: hidden;
   background: transparent !important;
-  font-family: 'VT323', monospace;
+  font-family: 'Exo 2', sans-serif;
 }
 
 /* ============================================
-   CRT CONTAINER - GOTHIC FRAME
+   CONTAINER - NEON FRAME
    ============================================ */
 
 .crt-container {
@@ -59,15 +59,15 @@ html, body {
   width: 100vw;
   height: 100vh;
   overflow: hidden;
-  /* Remove barrel distortion for cleaner look */
   border-radius: 0;
-  border: 3px solid var(--blood-red);
+  border: 2px solid var(--neon-cyan);
   box-shadow: 
-    inset 0 0 0 1px rgba(232, 228, 217, 0.1),
-    0 0 20px rgba(139, 0, 0, 0.3);
+    inset 0 0 0 1px rgba(0, 240, 255, 0.1),
+    0 0 30px var(--neon-cyan-glow),
+    0 0 60px var(--neon-purple-glow);
 }
 
-/* Scanlines Overlay - Reduced opacity for FPS */
+/* Scanlines Overlay - Subtle */
 .crt-container::before {
   content: "";
   position: absolute;
@@ -86,13 +86,11 @@ html, body {
   z-index: 100;
 }
 
-/* Flicker removed for performance */
-
-/* Vignette Effect - Gothic darker */
+/* Vignette Effect - Subtle */
 .vignette {
   position: fixed;
   inset: 0;
-  box-shadow: inset 0 0 200px rgba(0, 0, 0, 0.7);
+  box-shadow: inset 0 0 150px rgba(0, 0, 0, 0.5);
   pointer-events: none;
   z-index: 99;
   border-radius: 0;
@@ -101,116 +99,167 @@ html, body {
 /* Rolling line removed for performance */
 
 /* ============================================
-   GOTHIC TEXT EFFECTS
+   NEON TEXT EFFECTS
    ============================================ */
 
-.gothic-text {
-  text-shadow: 2px 2px 0 var(--blood-red);
-}
-
-.gothic-text-strong {
+.neon-text {
   text-shadow: 
-    2px 2px 0 var(--blood-red),
-    4px 4px 0 rgba(0, 0, 0, 0.5);
+    0 0 10px var(--neon-cyan),
+    0 0 20px var(--neon-cyan),
+    0 0 40px var(--neon-cyan);
 }
 
-/* Legacy chromatic - now gothic */
+.neon-text-strong {
+  text-shadow: 
+    0 0 10px var(--neon-cyan),
+    0 0 20px var(--neon-cyan),
+    0 0 40px var(--neon-cyan),
+    0 0 80px var(--neon-purple);
+}
+
+.neon-text-purple {
+  text-shadow: 
+    0 0 10px var(--neon-purple),
+    0 0 20px var(--neon-purple),
+    0 0 40px var(--neon-purple);
+}
+
+/* Glow pulse animation */
+@keyframes glow-pulse {
+  0%, 100% {
+    text-shadow: 
+      0 0 10px var(--neon-cyan),
+      0 0 20px var(--neon-cyan),
+      0 0 40px var(--neon-cyan),
+      0 0 80px var(--neon-purple);
+  }
+  50% {
+    text-shadow: 
+      0 0 15px var(--neon-cyan),
+      0 0 30px var(--neon-cyan),
+      0 0 60px var(--neon-cyan),
+      0 0 100px var(--neon-purple);
+  }
+}
+
+.glow-pulse {
+  animation: glow-pulse 3s ease-in-out infinite;
+}
+
+/* Legacy chromatic - now neon */
 .chromatic-text {
-  text-shadow: 2px 2px 0 rgba(139, 0, 0, 0.5);
+  text-shadow: 0 0 10px var(--neon-cyan-glow);
 }
 
 .chromatic-text-strong {
   text-shadow: 
-    2px 2px 0 var(--blood-red),
-    0 0 8px currentColor;
+    0 0 10px var(--neon-cyan),
+    0 0 20px var(--neon-purple);
+}
+
+/* Legacy gothic text - now neon */
+.gothic-text {
+  text-shadow: 0 0 10px var(--neon-cyan-glow);
+}
+
+.gothic-text-strong {
+  text-shadow: 
+    0 0 10px var(--neon-cyan),
+    0 0 20px var(--neon-cyan),
+    0 0 40px var(--neon-purple);
 }
 
 /* ============================================
-   PIXEL SKULL CSS ART
+   DECORATIVE ACCENT LINE
    ============================================ */
 
-.pixel-skull {
-  width: 2px;
-  height: 2px;
-  position: relative;
-  display: inline-block;
-  /* 8x8 pixel skull using box-shadow */
-  box-shadow:
-    /* Row 1 - Top of skull */
-    4px 0 0 var(--bone-white), 6px 0 0 var(--bone-white), 8px 0 0 var(--bone-white), 10px 0 0 var(--bone-white),
-    /* Row 2 */
-    2px 2px 0 var(--bone-white), 4px 2px 0 var(--bone-white), 6px 2px 0 var(--bone-white), 8px 2px 0 var(--bone-white), 10px 2px 0 var(--bone-white), 12px 2px 0 var(--bone-white),
-    /* Row 3 - Eyes */
-    2px 4px 0 var(--bone-white), 4px 4px 0 var(--blood-red), 6px 4px 0 var(--bone-white), 8px 4px 0 var(--bone-white), 10px 4px 0 var(--blood-red), 12px 4px 0 var(--bone-white),
-    /* Row 4 */
-    2px 6px 0 var(--bone-white), 4px 6px 0 var(--bone-white), 6px 6px 0 var(--blood-red), 8px 6px 0 var(--blood-red), 10px 6px 0 var(--bone-white), 12px 6px 0 var(--bone-white),
-    /* Row 5 - Teeth */
-    4px 8px 0 var(--bone-white), 6px 8px 0 var(--bg-primary), 8px 8px 0 var(--bone-white), 10px 8px 0 var(--bg-primary),
-    /* Row 6 - Jaw */
-    6px 10px 0 var(--bone-white), 8px 10px 0 var(--bone-white);
+.accent-line {
+  width: 150px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple));
+  border-radius: 2px;
+  animation: line-expand 1s ease-out;
 }
 
-.pixel-skull-large {
-  transform: scale(2);
-  margin: 12px;
+@keyframes line-expand {
+  from { width: 0; }
+  to { width: 150px; }
 }
 
 /* ============================================
-   GLASS PANEL - GOTHIC CARD STYLE
+   GLASS PANEL - NEON CARD STYLE
    ============================================ */
 
 .glass-panel {
-  background: var(--bg-card);
-  border: 3px solid var(--blood-red);
-  border-radius: 4px;
+  background: linear-gradient(135deg, rgba(0, 240, 255, 0.1), rgba(139, 92, 246, 0.1));
+  border-left: 3px solid var(--neon-cyan);
+  border-radius: 0 12px 12px 0;
+  backdrop-filter: blur(10px);
   position: relative;
   box-shadow: 
-    4px 4px 0 rgba(0, 0, 0, 0.5),
-    inset 0 0 0 1px rgba(232, 228, 217, 0.05);
+    0 0 20px var(--neon-cyan-glow),
+    inset 0 0 0 1px rgba(0, 240, 255, 0.1);
 }
 
 /* ============================================
-   MESSAGE STYLES - GOTHIC
+   MESSAGE STYLES - NEON
    ============================================ */
 
 .message-container {
   position: fixed;
-  padding: 10px 14px;
-  background: var(--bg-card);
-  border: 2px solid var(--blood-red);
-  border-radius: 4px;
-  max-width: 400px;
+  padding: 12px 18px;
+  background: linear-gradient(135deg, rgba(0, 240, 255, 0.08), rgba(139, 92, 246, 0.08));
+  border-left: 3px solid var(--neon-cyan);
+  border-radius: 0 12px 12px 0;
+  backdrop-filter: blur(10px);
+  max-width: 420px;
   contain: layout style paint;
   content-visibility: auto;
   z-index: 10;
   box-shadow: 
-    3px 3px 0 rgba(0, 0, 0, 0.5),
-    inset 0 0 0 1px rgba(232, 228, 217, 0.05);
+    0 0 15px var(--neon-cyan-glow),
+    inset 0 0 0 1px rgba(0, 240, 255, 0.1);
   will-change: transform, opacity;
+  animation: slide-in 0.5s ease-out;
+}
+
+@keyframes slide-in {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 .message-username {
-  font-family: 'Press Start 2P', cursive;
-  font-size: 10px;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
   margin-bottom: 6px;
-  image-rendering: pixelated;
-  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.8);
-  color: var(--bone-white);
+  text-shadow: 0 0 10px currentColor;
+  color: var(--neon-cyan);
 }
 
 .message-text {
-  font-family: 'VT323', monospace;
-  font-size: 22px;
-  color: var(--bone-white);
-  line-height: 1.2;
+  font-family: 'Exo 2', sans-serif;
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--pure-white);
+  line-height: 1.3;
   word-wrap: break-word;
-  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.5);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
 }
 
-/* Blinking Cursor - Gothic */
+/* Blinking Cursor - Neon */
 .cursor {
   display: inline-block;
-  color: var(--blood-red);
+  color: var(--neon-cyan);
+  text-shadow: 0 0 10px var(--neon-cyan);
   animation: blink 0.7s step-end infinite;
 }
 
@@ -219,14 +268,14 @@ html, body {
   51%, 100% { opacity: 0; }
 }
 
-/* Message Enter Animation - Simple fade in */
+/* Message Enter Animation */
 @keyframes messageEnter {
   0% { 
-    transform: scale(0.9);
+    transform: translateX(-30px);
     opacity: 0;
   }
   100% { 
-    transform: scale(1);
+    transform: translateX(0);
     opacity: 1;
   }
 }
@@ -235,14 +284,16 @@ html, body {
 @keyframes messageExit {
   0% { 
     opacity: 1;
+    transform: translateX(0);
   }
   100% { 
     opacity: 0;
+    transform: translateX(-20px);
   }
 }
 
 .message-enter {
-  animation: messageEnter 0.2s ease-out forwards;
+  animation: messageEnter 0.5s ease-out forwards;
 }
 
 .message-exit {
@@ -250,7 +301,7 @@ html, body {
 }
 
 /* ============================================
-   ALERT STYLES - GOTHIC
+   ALERT STYLES - NEON
    ============================================ */
 
 .alert-container {
@@ -264,78 +315,85 @@ html, body {
 }
 
 .alert-box {
-  background: var(--bg-card);
-  border: 4px solid var(--blood-red);
-  border-radius: 4px;
-  padding: 24px 48px;
-  font-family: 'Press Start 2P', cursive;
+  background: linear-gradient(135deg, rgba(0, 240, 255, 0.1), rgba(139, 92, 246, 0.1));
+  border: 2px solid var(--neon-cyan);
+  border-radius: 12px;
+  padding: 28px 52px;
+  font-family: 'Rajdhani', sans-serif;
+  backdrop-filter: blur(15px);
   box-shadow: 
-    6px 6px 0 rgba(0, 0, 0, 0.6),
-    inset 0 0 0 2px rgba(232, 228, 217, 0.05);
+    0 0 40px var(--neon-cyan-glow),
+    0 0 80px var(--neon-purple-glow),
+    inset 0 0 0 1px rgba(0, 240, 255, 0.2);
 }
 
 .alert-title {
-  font-size: 24px;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 4px;
   margin-bottom: 16px;
-  color: var(--bone-white);
-  text-shadow: 3px 3px 0 var(--blood-red);
-  /* Limited animation - 3 cycles only */
-  animation: pixelFlash 0.5s steps(2) 3;
-}
-
-@keyframes pixelFlash {
-  0%, 50% { opacity: 1; }
-  51%, 100% { opacity: 0.8; }
+  color: var(--pure-white);
+  text-shadow: 
+    0 0 10px var(--neon-cyan),
+    0 0 20px var(--neon-cyan),
+    0 0 40px var(--neon-cyan),
+    0 0 80px var(--neon-purple);
+  animation: glow-pulse 3s ease-in-out infinite;
 }
 
 .alert-subtitle {
-  font-size: 14px;
-  color: var(--bone-muted);
+  font-family: 'Exo 2', sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--muted-white);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
 }
 
 .alert-amount {
-  font-size: 32px;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 36px;
+  font-weight: 700;
   margin-top: 12px;
-  color: var(--bone-white);
-  text-shadow: 2px 2px 0 var(--blood-red);
+  color: var(--pure-white);
+  text-shadow: 
+    0 0 10px var(--neon-purple),
+    0 0 20px var(--neon-purple),
+    0 0 40px var(--neon-purple);
 }
 
-/* Pixel Skulls for Raids - Static */
-.raid-skulls {
+/* Alert Icons */
+.alert-icons {
   position: absolute;
-  top: -40px;
+  top: -45px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
   gap: 16px;
 }
 
-.raid-skull {
-  width: 2px;
-  height: 2px;
-  /* Mini pixel skull */
-  box-shadow:
-    4px 0 0 var(--bone-white), 6px 0 0 var(--bone-white), 8px 0 0 var(--bone-white), 10px 0 0 var(--bone-white),
-    2px 2px 0 var(--bone-white), 4px 2px 0 var(--bone-white), 6px 2px 0 var(--bone-white), 8px 2px 0 var(--bone-white), 10px 2px 0 var(--bone-white), 12px 2px 0 var(--bone-white),
-    2px 4px 0 var(--bone-white), 4px 4px 0 var(--blood-red), 6px 4px 0 var(--bone-white), 8px 4px 0 var(--bone-white), 10px 4px 0 var(--blood-red), 12px 4px 0 var(--bone-white),
-    4px 6px 0 var(--bone-white), 6px 6px 0 #0a0808, 8px 6px 0 var(--bone-white), 10px 6px 0 #0a0808;
+.alert-icon {
+  font-size: 24px;
+  color: var(--neon-cyan);
+  text-shadow: 0 0 15px var(--neon-cyan);
 }
 
-/* Legacy raid ships - now skulls */
+/* Legacy raid ships - now neon icons */
 .raid-ships {
   position: absolute;
-  top: -40px;
+  top: -45px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
-  gap: 12px;
+  gap: 16px;
 }
 
 .pixel-ship {
-  font-size: 16px;
-  color: var(--bone-white);
-  text-shadow: 0 0 4px var(--blood-red);
-  /* Static - no animation for FPS */
+  font-size: 20px;
+  color: var(--neon-cyan);
+  text-shadow: 0 0 15px var(--neon-cyan-glow);
+  filter: drop-shadow(0 0 8px var(--neon-cyan));
 }
 
 /* Alert Enter/Exit */
@@ -345,7 +403,7 @@ html, body {
     opacity: 0;
   }
   50% {
-    transform: translate(-50%, -50%) scale(1.1);
+    transform: translate(-50%, -50%) scale(1.05);
   }
   100% {
     transform: translate(-50%, -50%) scale(1);
@@ -359,58 +417,83 @@ html, body {
     opacity: 1;
   }
   100% {
-    transform: translate(-50%, -50%) scale(0);
+    transform: translate(-50%, -50%) scale(0.9);
     opacity: 0;
   }
 }
 
 .alert-enter {
-  animation: alertEnter 0.3s ease-out forwards;
+  animation: alertEnter 0.4s ease-out forwards;
 }
 
 .alert-exit {
   animation: alertExit 0.3s ease-in forwards;
 }
 
-/* Screen Flash for Events - Gothic colors */
+/* Screen Flash for Events - Neon colors */
 .screen-flash {
   position: fixed;
   inset: 0;
   pointer-events: none;
   z-index: 150;
-  animation: screenFlash 0.1s ease-out;
+  animation: screenFlash 0.15s ease-out;
 }
 
 @keyframes screenFlash {
-  0% { opacity: 0.4; }
+  0% { opacity: 0.3; }
   100% { opacity: 0; }
 }
 
 /* ============================================
-   UTILITY CLASSES - GOTHIC
+   UTILITY CLASSES - NEON
    ============================================ */
 
 .pixel-text {
-  font-family: 'Press Start 2P', cursive;
-  image-rendering: pixelated;
-  -webkit-font-smoothing: none;
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
 }
 
 .terminal-text {
-  font-family: 'VT323', monospace;
+  font-family: 'Exo 2', sans-serif;
+  font-weight: 500;
 }
 
-/* Gothic color utilities */
-.text-bone { color: var(--bone-white); }
-.text-blood { color: var(--blood-red); }
-.text-ash { color: var(--ash-gray); }
-.text-ember { color: var(--ember-orange); }
-.text-soul { color: var(--soul-green); }
+/* Neon color utilities */
+.text-white { color: var(--pure-white); }
+.text-cyan { color: var(--neon-cyan); }
+.text-purple { color: var(--neon-purple); }
+.text-muted { color: var(--muted-white); }
 
-/* Gothic border accent */
-.border-blood { border-color: var(--blood-red); }
-.border-bone { border-color: var(--bone-white); }
+/* Legacy gothic - mapped to neon */
+.text-bone { color: var(--pure-white); }
+.text-blood { color: var(--neon-cyan); }
+.text-ash { color: var(--muted-white); }
+.text-ember { color: var(--neon-purple); }
+.text-soul { color: var(--neon-green); }
 
-/* Gothic glow effects - use sparingly */
-.glow-blood { box-shadow: 0 0 12px rgba(139, 0, 0, 0.5); }
-.glow-ember { box-shadow: 0 0 12px rgba(184, 134, 11, 0.4); }
+/* Neon border accent */
+.border-cyan { border-color: var(--neon-cyan); }
+.border-purple { border-color: var(--neon-purple); }
+
+/* Legacy gothic borders - mapped */
+.border-blood { border-color: var(--neon-cyan); }
+.border-bone { border-color: var(--pure-white); }
+
+/* Neon glow effects */
+.glow-cyan { 
+  box-shadow: 
+    0 0 15px var(--neon-cyan-glow),
+    0 0 30px var(--neon-cyan-glow);
+}
+
+.glow-purple { 
+  box-shadow: 
+    0 0 15px var(--neon-purple-glow),
+    0 0 30px var(--neon-purple-glow);
+}
+
+/* Legacy gothic glows - mapped */
+.glow-blood { box-shadow: 0 0 20px var(--neon-cyan-glow); }
+.glow-ember { box-shadow: 0 0 20px var(--neon-purple-glow); }

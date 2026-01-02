@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Habbi3 Chat Overlay - Retro Arcade",
-  description: "Retro arcade-styled Twitch chat overlay for OBS",
+  title: "Habbi3 Chat Overlay - Neon Stream",
+  description: "Neon-styled Twitch chat overlay for OBS",
 };
 
 export default function RootLayout({
